@@ -1,0 +1,155 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useEventStore } from '../presenter/event_store';
+import { useGroupStore } from '../presenter/group_store';
+import { useTimelineStore } from '../presenter/timeline_store';
+import { Event } from '../usecase/types';
+import TimelineHeader from './timeline-header';
+import EventList from './event-list';
+import TimelineGrid from './timeline-grid';
+import EventForm from './event-form';
+
+export default function GanttChart() {
+  const {
+    events,
+    selectedEvent,
+    isLoading: eventsLoading,
+    error: eventError,
+    loadEvents,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+    selectEvent
+  } = useEventStore();
+
+  const {
+    groups,
+    isLoading: groupsLoading,
+    error: groupError,
+    loadGroups
+  } = useGroupStore();
+
+  const {
+    visibleStart,
+    visibleEnd,
+    totalDays,
+    calculateFromEvents
+  } = useTimelineStore();
+
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Load data on mount
+  useEffect(() => {
+    loadGroups();
+    loadEvents();
+  }, [loadGroups, loadEvents]);
+
+  // Calculate timeline when events change
+  useEffect(() => {
+    if (events.length > 0) {
+      calculateFromEvents(events);
+    } else {
+      // Default timeline if no events
+      calculateFromEvents([]);
+    }
+  }, [events, calculateFromEvents]);
+
+  const handleCreateEvent = () => {
+    selectEvent(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditEvent = (event: Event) => {
+    selectEvent(event);
+    setIsFormOpen(true);
+  };
+
+  const handleSaveEvent = async (data: any) => {
+    if (selectedEvent) {
+      await updateEvent(selectedEvent.id, data);
+    } else {
+      await createEvent(data);
+    }
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    await deleteEvent(id);
+  };
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+    selectEvent(null);
+  };
+
+  const isLoading = eventsLoading || groupsLoading;
+  const error = eventError || groupError;
+
+  if (isLoading && events.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen flex flex-col">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-300 px-6 py-4 flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">Gantt Chart</h1>
+        <div className="flex gap-2">
+          <button
+            onClick={handleCreateEvent}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+          >
+            Add Event
+          </button>
+        </div>
+      </div>
+
+      {/* Error display */}
+      {error && (
+        <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+          {error}
+        </div>
+      )}
+
+      {/* Gantt Chart */}
+      <div className="flex-1 overflow-auto">
+        {visibleStart && visibleEnd && (
+          <div className="min-w-full">
+            <TimelineHeader startDate={visibleStart} endDate={visibleEnd} />
+            
+            <div className="flex">
+              <EventList
+                events={events}
+                onSelectEvent={handleEditEvent}
+                selectedEventId={selectedEvent?.id || null}
+              />
+              <TimelineGrid
+                events={events}
+                groups={groups}
+                startDate={visibleStart}
+                endDate={visibleEnd}
+                totalDays={totalDays}
+                onSelectEvent={handleEditEvent}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Event Form Modal */}
+      {isFormOpen && (
+        <EventForm
+          event={selectedEvent}
+          groups={groups}
+          onSave={handleSaveEvent}
+          onDelete={selectedEvent ? handleDeleteEvent : undefined}
+          onClose={handleCloseForm}
+        />
+      )}
+    </div>
+  );
+}

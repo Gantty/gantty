@@ -28,12 +28,12 @@ This project uses Next.js Clean Architecture:
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Next.js 14 project with TypeScript and App Router at repository root
-- [ ] T002 Install core dependencies: zustand, immer, date-fns, tailwind CSS
-- [ ] T003 [P] Configure TypeScript with strict mode in tsconfig.json
-- [ ] T004 [P] Configure Tailwind CSS in tailwind.config.js with custom colors for groups
-- [ ] T005 [P] Setup ESLint and Prettier configuration files
-- [ ] T006 Create feature directory structure at lib/gantt-chart/ with ui/, presenter/, usecase/, repository/, external/ folders
+- [X] T001 Initialize Next.js 14 project with TypeScript and App Router at repository root
+- [X] T002 Install core dependencies: zustand, immer, date-fns, tailwind CSS
+- [X] T003 [P] Configure TypeScript with strict mode in tsconfig.json
+- [X] T004 [P] Configure Tailwind CSS in tailwind.config.js with custom colors for groups
+- [X] T005 [P] Setup ESLint and Prettier configuration files
+- [X] T006 Create feature directory structure at lib/gantt-chart/ with ui/, presenter/, usecase/, repository/, external/ folders
 
 ---
 
@@ -43,15 +43,15 @@ This project uses Next.js Clean Architecture:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Define core domain types (Event, Group, Version, VersionSnapshot, DisplaySettings, FocusPeriod) in lib/gantt-chart/usecase/types.ts
-- [ ] T008 [P] Define error classes (ValidationError, NotFoundError, QuotaExceededError, StorageUnavailableError, BusinessRuleViolationError) in lib/gantt-chart/usecase/errors.ts
-- [ ] T009 [P] Create shared date utilities (differenceInDays, eachDayOfInterval, format, isWithinInterval) in lib/shared/utils/date.ts
-- [ ] T010 [P] Create shared validation utilities (validateDateRange, validateHexColor, validateNonEmpty) in lib/shared/utils/validation.ts
-- [ ] T011 Define EventRepository interface with getAll, getById, create, update, delete, getByGroupId methods in lib/gantt-chart/usecase/event_repository.ts
-- [ ] T012 [P] Define GroupRepository interface with getAll, getById, create, update, delete, setVisibility, initializeDefaults methods in lib/gantt-chart/usecase/group_repository.ts
-- [ ] T013 [P] Define VersionRepository interface with getAll, getById, getByNumber, create, delete, getNextVersionNumber methods in lib/gantt-chart/usecase/version_repository.ts
-- [ ] T014 [P] Define StorageService interface with get, set, remove, clear, isAvailable, getUsage methods in lib/gantt-chart/repository/storage_service.ts
-- [ ] T015 Implement LocalStorageService implementing StorageService interface in lib/gantt-chart/external/local_storage_service.ts
+- [X] T007 Define core domain types (Event, Group, Version, VersionSnapshot, DisplaySettings, FocusPeriod) in lib/gantt-chart/usecase/types.ts
+- [X] T008 [P] Define error classes (ValidationError, NotFoundError, QuotaExceededError, StorageUnavailableError, BusinessRuleViolationError) in lib/gantt-chart/usecase/errors.ts
+- [X] T009 [P] Create shared date utilities (differenceInDays, eachDayOfInterval, format, isWithinInterval) in lib/shared/utils/date.ts
+- [X] T010 [P] Create shared validation utilities (validateDateRange, validateHexColor, validateNonEmpty) in lib/shared/utils/validation.ts
+- [X] T011 Define EventRepository interface with getAll, getById, create, update, delete, getByGroupId methods in lib/gantt-chart/usecase/event_repository.ts
+- [X] T012 [P] Define GroupRepository interface with getAll, getById, create, update, delete, setVisibility, initializeDefaults methods in lib/gantt-chart/usecase/group_repository.ts
+- [X] T013 [P] Define VersionRepository interface with getAll, getById, getByNumber, create, delete, getNextVersionNumber methods in lib/gantt-chart/usecase/version_repository.ts
+- [X] T014 [P] Define StorageService interface with get, set, remove, clear, isAvailable, getUsage methods in lib/gantt-chart/repository/storage_service.ts
+- [X] T015 Implement LocalStorageService implementing StorageService interface in lib/gantt-chart/external/local_storage_service.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -65,22 +65,22 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Implement EventRepositoryImpl with localStorage persistence in lib/gantt-chart/repository/event_repository_impl.ts
-- [ ] T017 [P] [US1] Implement GroupRepositoryImpl with localStorage persistence and default groups (Frontend, Backend, Design) in lib/gantt-chart/repository/group_repository_impl.ts
-- [ ] T018 [US1] Implement CreateEventUsecase with validation (endDate >= startDate, groupId exists, name not empty) in lib/gantt-chart/usecase/create_event_usecase.ts
-- [ ] T019 [P] [US1] Implement UpdateEventUsecase with validation in lib/gantt-chart/usecase/update_event_usecase.ts
-- [ ] T020 [P] [US1] Implement DeleteEventUsecase in lib/gantt-chart/usecase/delete_event_usecase.ts
-- [ ] T021 [US1] Implement CalculateTimelineUsecase to compute date range from events (earliest start - buffer, latest end + buffer) in lib/gantt-chart/usecase/calculate_timeline_usecase.ts
-- [ ] T022 [US1] Create event_store with Zustand: state (events, selectedEvent, isLoading, error), actions (loadEvents, createEvent, updateEvent, deleteEvent, selectEvent) in lib/gantt-chart/presenter/event_store.ts
-- [ ] T023 [P] [US1] Create group_store with Zustand: state (groups, isLoading), actions (loadGroups, createGroup, updateGroup, deleteGroup) in lib/gantt-chart/presenter/group_store.ts
-- [ ] T024 [P] [US1] Create timeline_store with Zustand: state (visibleStart, visibleEnd, totalDays), actions (setTimelineRange, calculateFromEvents, panTimeline) in lib/gantt-chart/presenter/timeline_store.ts
-- [ ] T025 [US1] Build TimelineHeader component with sticky positioning (position: sticky; top: 0) displaying date columns using CSS Grid in lib/gantt-chart/ui/timeline-header.tsx
-- [ ] T026 [P] [US1] Build EventList component with sticky event names (position: sticky; left: 0) in lib/gantt-chart/ui/event-list.tsx
-- [ ] T027 [P] [US1] Build TimelineGrid component with CSS Grid (grid-template-columns: repeat(N, 1fr)) for day columns in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T028 [US1] Build EventBar component positioned using grid-column: start/end based on date calculations in lib/gantt-chart/ui/event-bar.tsx
-- [ ] T029 [US1] Build EventForm component (modal) for create/edit with fields: name, group, startDate, endDate, description in lib/gantt-chart/ui/event-form.tsx
-- [ ] T030 [US1] Build main GanttChart component composing TimelineHeader, EventList, TimelineGrid, EventBar components in lib/gantt-chart/ui/gantt-chart.tsx
-- [ ] T031 [US1] Create Gantt chart page at app/gantt/page.tsx importing and rendering GanttChart component
+- [X] T016 [P] [US1] Implement EventRepositoryImpl with localStorage persistence in lib/gantt-chart/repository/event_repository_impl.ts
+- [X] T017 [P] [US1] Implement GroupRepositoryImpl with localStorage persistence and default groups (Frontend, Backend, Design) in lib/gantt-chart/repository/group_repository_impl.ts
+- [X] T018 [US1] Implement CreateEventUsecase with validation (endDate >= startDate, groupId exists, name not empty) in lib/gantt-chart/usecase/create_event_usecase.ts
+- [X] T019 [P] [US1] Implement UpdateEventUsecase with validation in lib/gantt-chart/usecase/update_event_usecase.ts
+- [X] T020 [P] [US1] Implement DeleteEventUsecase in lib/gantt-chart/usecase/delete_event_usecase.ts
+- [X] T021 [US1] Implement CalculateTimelineUsecase to compute date range from events (earliest start - buffer, latest end + buffer) in lib/gantt-chart/usecase/calculate_timeline_usecase.ts
+- [X] T022 [US1] Create event_store with Zustand: state (events, selectedEvent, isLoading, error), actions (loadEvents, createEvent, updateEvent, deleteEvent, selectEvent) in lib/gantt-chart/presenter/event_store.ts
+- [X] T023 [P] [US1] Create group_store with Zustand: state (groups, isLoading), actions (loadGroups, createGroup, updateGroup, deleteGroup) in lib/gantt-chart/presenter/group_store.ts
+- [X] T024 [P] [US1] Create timeline_store with Zustand: state (visibleStart, visibleEnd, totalDays), actions (setTimelineRange, calculateFromEvents, panTimeline) in lib/gantt-chart/presenter/timeline_store.ts
+- [X] T025 [US1] Build TimelineHeader component with sticky positioning (position: sticky; top: 0) displaying date columns using CSS Grid in lib/gantt-chart/ui/timeline-header.tsx
+- [X] T026 [P] [US1] Build EventList component with sticky event names (position: sticky; left: 0) in lib/gantt-chart/ui/event-list.tsx
+- [X] T027 [P] [US1] Build TimelineGrid component with CSS Grid (grid-template-columns: repeat(N, 1fr)) for day columns in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T028 [US1] Build EventBar component positioned using grid-column: start/end based on date calculations in lib/gantt-chart/ui/event-bar.tsx
+- [X] T029 [US1] Build EventForm component (modal) for create/edit with fields: name, group, startDate, endDate, description in lib/gantt-chart/ui/event-form.tsx
+- [X] T030 [US1] Build main GanttChart component composing TimelineHeader, EventList, TimelineGrid, EventBar components in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T031 [US1] Create Gantt chart page at app/gantt/page.tsx importing and rendering GanttChart component
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - users can create, edit, delete events and see them on a scrollable timeline
 

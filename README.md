@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gantt Chart Planning Tool
 
-## Getting Started
+A local browser-based Gantt chart tool for project planning and schedule tracking built with Next.js, TypeScript, and Clean Architecture.
 
-First, run the development server:
+## 🎯 Features Implemented (MVP - Phase 3 Complete)
+
+### ✅ User Story 1: Create and View Basic Gantt Chart (P1)
+
+Users can create events with dates and visualize them on a timeline to understand project scheduling at a glance.
+
+**Key Features:**
+- Create, edit, and delete events (tasks)
+- Assign events to groups (Frontend, Backend, Design)
+- Visual timeline with day-level granularity
+- Sticky headers (dates stay at top, event names stay at left)
+- Color-coded events by group
+- Scrollable timeline view
+- 100% offline capability with localStorage persistence
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000/gantt](http://localhost:3000/gantt) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **State Management**: Zustand
+- **Styling**: Tailwind CSS
+- **Date Utilities**: date-fns
+- **Storage**: localStorage (100% offline)
+- **Architecture**: Clean Architecture
 
-## Learn More
+## 🎨 Usage
 
-To learn more about Next.js, take a look at the following resources:
+### Creating an Event
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Click "Add Event" button
+2. Fill in name, group, start/end dates, and optional description
+3. Click "Save"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Editing/Deleting
 
-## Deploy on Vercel
+- Click on event name or event bar to edit
+- Use "Delete" button in edit modal to remove
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏗️ Architecture
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Clean Architecture with layer separation:
+- **UI Layer**: React components (`lib/gantt-chart/ui/`)
+- **Presenter Layer**: Zustand stores (`lib/gantt-chart/presenter/`)
+- **Use Case Layer**: Business logic (`lib/gantt-chart/usecase/`)
+- **Repository Layer**: Data access (`lib/gantt-chart/repository/`)
+- **External Layer**: localStorage (`lib/gantt-chart/external/`)
+
+See `specs/001-gantt-chart/` for detailed documentation.
+
+## 📋 Roadmap
+
+**✅ Phase 3 Complete**: Basic Gantt chart with CRUD operations
+
+**Coming Soon**:
+- Filter and search events (US2)
+- Timeline navigation controls (US3)  
+- Visual time indicators (US4)
+- Focus time period highlighting (US5)
+- Version history & comparison (US6)
+- Custom group management (US7)
+
+---
+
+**Version**: 0.1.0 (MVP)  
+**Status**: ✅ MVP Ready for Testing
