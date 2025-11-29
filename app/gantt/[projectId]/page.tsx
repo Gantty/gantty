@@ -55,6 +55,16 @@ export default function ProjectGanttPage() {
     [projects, projectId]
   );
 
+  useEffect(() => {
+    const baseTitle = 'Gantty';
+    const title = project?.name ? `${project.name} - ${baseTitle}` : baseTitle;
+    document.title = title;
+
+    return () => {
+      document.title = baseTitle;
+    };
+  }, [project?.name]);
+
   if (!projectId) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-800">
