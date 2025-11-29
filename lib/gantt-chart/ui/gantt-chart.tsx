@@ -144,6 +144,11 @@ export default function GanttChart() {
 
     const target = e.target as HTMLElement;
 
+    // Don't start panning when interacting with non-pan zones (e.g. event list)
+    if (target.closest('[data-prevent-pan="true"]')) {
+      return;
+    }
+
     // Don't drag if clicking on form elements
     if (
       target.tagName === 'BUTTON' ||
@@ -473,7 +478,10 @@ export default function GanttChart() {
             />
 
             <div className="flex relative">
-              <div className="sticky left-0 z-20 bg-white flex-shrink-0">
+              <div
+                className="sticky left-0 z-20 bg-white flex-shrink-0"
+                data-prevent-pan="true"
+              >
                 <EventList
                   events={displayEvents}
                   onSelectEvent={handleFocusEvent}
