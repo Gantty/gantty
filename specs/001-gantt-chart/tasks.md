@@ -94,11 +94,11 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 2
 
-- [ ] T032 [P] [US2] Implement FilterEventsUsecase with keyword matching (name or description) and group visibility filtering in lib/gantt-chart/usecase/filter_events_usecase.ts
-- [ ] T033 [US2] Create filter_store with Zustand: state (searchKeyword, visibleGroupIds Set, filteredEvents), actions (setSearchKeyword, toggleGroupVisibility, setAllGroupsVisibility, applyFilters) in lib/gantt-chart/presenter/filter_store.ts
-- [ ] T034 [P] [US2] Build SearchBar component with debounced input (300ms) calling setSearchKeyword in lib/gantt-chart/ui/search-bar.tsx
-- [ ] T035 [P] [US2] Build GroupFilter component with checkboxes for each group calling toggleGroupVisibility in lib/gantt-chart/ui/group-filter.tsx
-- [ ] T036 [US2] Integrate FilterEventsUsecase into GanttChart component to display only filteredEvents on timeline in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T032 [P] [US2] Implement FilterEventsUsecase with keyword matching (name or description) and group visibility filtering in lib/gantt-chart/usecase/filter_events_usecase.ts
+- [X] T033 [US2] Create filter_store with Zustand: state (searchKeyword, visibleGroupIds Set, filteredEvents), actions (setSearchKeyword, toggleGroupVisibility, setAllGroupsVisibility, applyFilters) in lib/gantt-chart/presenter/filter_store.ts
+- [X] T034 [P] [US2] Build SearchBar component with debounced input (300ms) calling setSearchKeyword in lib/gantt-chart/ui/search-bar.tsx
+- [X] T035 [P] [US2] Build GroupFilter component with checkboxes for each group calling toggleGroupVisibility in lib/gantt-chart/ui/group-filter.tsx
+- [X] T036 [US2] Integrate FilterEventsUsecase into GanttChart component to display only filteredEvents on timeline in lib/gantt-chart/ui/gantt-chart.tsx
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - users can filter by group and search by keyword
 
@@ -112,11 +112,11 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Add TimeControls component with pan left/right buttons and "Show All" button calling panTimeline action in lib/gantt-chart/ui/time-controls.tsx
-- [ ] T038 [US3] Implement header corner cell (top-left) with sticky positioning in both directions (position: sticky; top: 0; left: 0; z-index: 30) in lib/gantt-chart/ui/gantt-chart.tsx
-- [ ] T039 [US3] Add CSS containment (contain: layout style) to event rows for scroll performance optimization in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T040 [US3] Implement React.memo() on EventBar component to prevent unnecessary re-renders during scrolling in lib/gantt-chart/ui/event-bar.tsx
-- [ ] T041 [US3] Add box-shadow to sticky TimelineHeader and EventList for visual depth in lib/gantt-chart/ui/timeline-header.tsx and lib/gantt-chart/ui/event-list.tsx
+- [X] T037 [US3] Add TimeControls component with pan left/right buttons and "Show All" button calling panTimeline action in lib/gantt-chart/ui/time-controls.tsx
+- [X] T038 [US3] Implement header corner cell (top-left) with sticky positioning in both directions (position: sticky; top: 0; left: 0; z-index: 30) in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T039 [US3] Add CSS containment (contain: layout style) to event rows for scroll performance optimization in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T040 [US3] Implement React.memo() on EventBar component to prevent unnecessary re-renders during scrolling in lib/gantt-chart/ui/event-bar.tsx
+- [X] T041 [US3] Add box-shadow to sticky TimelineHeader and EventList for visual depth in lib/gantt-chart/ui/timeline-header.tsx and lib/gantt-chart/ui/event-list.tsx
 
 **Checkpoint**: All sticky header functionality complete - users can scroll large charts with persistent visual context
 
@@ -130,10 +130,10 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 4
 
-- [ ] T042 [P] [US4] Add currentDateLine rendering logic: check if today is within visibleStart/visibleEnd, render vertical line at today's column in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T043 [P] [US4] Add 5-day guide lines rendering logic: calculate positions every 5 days from visibleStart, render lighter vertical lines in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T044 [US4] Style current date line with distinct color (e.g., red/orange) and full height (position: absolute; height: 100%) in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T045 [US4] Style 5-day guide lines with subtle appearance (gray, dashed, opacity 0.3) in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T042 [P] [US4] Add currentDateLine rendering logic: check if today is within visibleStart/visibleEnd, render vertical line at today's column in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T043 [P] [US4] Add 5-day guide lines rendering logic: calculate positions every 5 days from visibleStart, render lighter vertical lines in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T044 [US4] Style current date line with distinct color (e.g., red/orange) and full height (position: absolute; height: 100%) in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T045 [US4] Style 5-day guide lines with subtle appearance (gray, dashed, opacity 0.3) in lib/gantt-chart/ui/timeline-grid.tsx
 
 **Checkpoint**: Visual time indicators help users orient themselves in the timeline
 
@@ -147,11 +147,11 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 5
 
-- [ ] T046 [US5] Add focusPeriod state (start, end dates or null) to timeline_store with setFocusPeriod and clearFocusPeriod actions in lib/gantt-chart/presenter/timeline_store.ts
-- [ ] T047 [US5] Add focus period controls (start date picker, end date picker, Apply button, Clear button) to TimeControls component in lib/gantt-chart/ui/time-controls.tsx
-- [ ] T048 [US5] Implement focus period validation (end >= start) in setFocusPeriod action in lib/gantt-chart/presenter/timeline_store.ts
-- [ ] T049 [US5] Add focus period highlight rendering in TimelineGrid: semi-transparent overlay on non-focus areas or brighter background on focus area in lib/gantt-chart/ui/timeline-grid.tsx
-- [ ] T050 [US5] Ensure all events remain visible (no filtering) when focus period is active, only visual highlighting changes in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T046 [US5] Add focusPeriod state (start, end dates or null) to timeline_store with setFocusPeriod and clearFocusPeriod actions in lib/gantt-chart/presenter/timeline_store.ts
+- [X] T047 [US5] Add focus period controls (start date picker, end date picker, Apply button, Clear button) to TimeControls component in lib/gantt-chart/ui/time-controls.tsx
+- [X] T048 [US5] Implement focus period validation (end >= start) in setFocusPeriod action in lib/gantt-chart/presenter/timeline_store.ts
+- [X] T049 [US5] Add focus period highlight rendering in TimelineGrid: semi-transparent overlay on non-focus areas or brighter background on focus area in lib/gantt-chart/ui/timeline-grid.tsx
+- [X] T050 [US5] Ensure all events remain visible (no filtering) when focus period is active, only visual highlighting changes in lib/gantt-chart/ui/gantt-chart.tsx
 
 **Checkpoint**: Focus period feature complete - users can highlight specific time ranges
 
@@ -165,16 +165,16 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 6
 
-- [ ] T051 [P] [US6] Implement VersionRepositoryImpl with localStorage persistence and auto-incrementing version numbers in lib/gantt-chart/repository/version_repository_impl.ts
-- [ ] T052 [US6] Implement SaveVersionUsecase: capture current events, groups, settings as snapshot, create version with next number in lib/gantt-chart/usecase/save_version_usecase.ts
-- [ ] T053 [US6] Implement CompareVersionsUsecase with Map-based comparison algorithm: identify added events (in V2 not V1), deleted events (in V1 not V2), modified events (in both but different) in lib/gantt-chart/usecase/compare_versions_usecase.ts
-- [ ] T054 [US6] Add detectEventChanges helper function to identify which fields changed (name, description, startDate, endDate, groupId) with before/after values in lib/gantt-chart/usecase/compare_versions_usecase.ts
-- [ ] T055 [US6] Add detectGroupChanges helper function to identify added, deleted, modified groups with field-level changes in lib/gantt-chart/usecase/compare_versions_usecase.ts
-- [ ] T056 [US6] Create version_store with Zustand: state (versions, selectedVersionIds, diff, isComparing), actions (loadVersions, saveVersion, selectVersion, compareSelected, deleteVersion) in lib/gantt-chart/presenter/version_store.ts
-- [ ] T057 [P] [US6] Build VersionList component displaying all versions with number, timestamp, note, and checkboxes for selection in lib/gantt-chart/ui/version-list.tsx
-- [ ] T058 [P] [US6] Build VersionDiff component displaying comparison results: added events section, deleted events section, modified events section with before/after tables, group changes section in lib/gantt-chart/ui/version-diff.tsx
-- [ ] T059 [US6] Add "Save Version" button to GanttChart with modal for entering version note in lib/gantt-chart/ui/gantt-chart.tsx
-- [ ] T060 [US6] Add "Compare Versions" button enabled only when exactly 2 versions selected, opening VersionDiff modal in lib/gantt-chart/ui/version-list.tsx
+- [X] T051 [P] [US6] Implement VersionRepositoryImpl with localStorage persistence and auto-incrementing version numbers in lib/gantt-chart/repository/version_repository_impl.ts
+- [X] T052 [US6] Implement SaveVersionUsecase: capture current events, groups, settings as snapshot, create version with next number in lib/gantt-chart/usecase/save_version_usecase.ts
+- [X] T053 [US6] Implement CompareVersionsUsecase with Map-based comparison algorithm: identify added events (in V2 not V1), deleted events (in V1 not V2), modified events (in both but different) in lib/gantt-chart/usecase/compare_versions_usecase.ts
+- [X] T054 [US6] Add detectEventChanges helper function to identify which fields changed (name, description, startDate, endDate, groupId) with before/after values in lib/gantt-chart/usecase/compare_versions_usecase.ts
+- [X] T055 [US6] Add detectGroupChanges helper function to identify added, deleted, modified groups with field-level changes in lib/gantt-chart/usecase/compare_versions_usecase.ts
+- [X] T056 [US6] Create version_store with Zustand: state (versions, selectedVersionIds, diff, isComparing), actions (loadVersions, saveVersion, selectVersion, compareSelected, deleteVersion) in lib/gantt-chart/presenter/version_store.ts
+- [X] T057 [P] [US6] Build VersionList component displaying all versions with number, timestamp, note, and checkboxes for selection in lib/gantt-chart/ui/version-list.tsx
+- [X] T058 [P] [US6] Build VersionDiff component displaying comparison results: added events section, deleted events section, modified events section with before/after tables, group changes section in lib/gantt-chart/ui/version-diff.tsx
+- [X] T059 [US6] Add "Save Version" button to GanttChart with modal for entering version note in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T060 [US6] Add "Compare Versions" button enabled only when exactly 2 versions selected, opening VersionDiff modal in lib/gantt-chart/ui/version-list.tsx
 
 **Checkpoint**: Version history and comparison complete - users can track schedule evolution over time
 
@@ -188,15 +188,15 @@ This project uses Next.js Clean Architecture:
 
 ### Implementation for User Story 7
 
-- [ ] T061 [US7] Implement CreateGroupUsecase with validation (name unique, color valid hex format) in lib/gantt-chart/usecase/create_group_usecase.ts
-- [ ] T062 [P] [US7] Implement UpdateGroupUsecase with validation (name unique if changed) in lib/gantt-chart/usecase/update_group_usecase.ts
-- [ ] T063 [P] [US7] Implement DeleteGroupUsecase with business rule: prevent deletion if group has events, require reassignment first in lib/gantt-chart/usecase/delete_group_usecase.ts
-- [ ] T064 [US7] Update group_store to integrate CreateGroupUsecase, UpdateGroupUsecase, DeleteGroupUsecase in lib/gantt-chart/presenter/group_store.ts
-- [ ] T065 [US7] Build GroupManager component (modal) with group list showing all groups, Add Group button, Edit/Delete buttons per group in lib/gantt-chart/ui/group-manager.tsx
-- [ ] T066 [US7] Build Add/Edit Group form with fields: name (text input), color (color picker), order (number input), validation errors display in lib/gantt-chart/ui/group-manager.tsx
-- [ ] T067 [US7] Implement delete confirmation dialog that checks for associated events and displays appropriate error message in lib/gantt-chart/ui/group-manager.tsx
-- [ ] T068 [US7] Add "Manage Groups" button to GanttChart opening GroupManager modal in lib/gantt-chart/ui/gantt-chart.tsx
-- [ ] T069 [US7] Update EventBar to reactively update color when group color changes using React.memo with group dependency in lib/gantt-chart/ui/event-bar.tsx
+- [X] T061 [US7] Implement CreateGroupUsecase with validation (name unique, color valid hex format) in lib/gantt-chart/usecase/create_group_usecase.ts
+- [X] T062 [P] [US7] Implement UpdateGroupUsecase with validation (name unique if changed) in lib/gantt-chart/usecase/update_group_usecase.ts
+- [X] T063 [P] [US7] Implement DeleteGroupUsecase with business rule: prevent deletion if group has events, require reassignment first in lib/gantt-chart/usecase/delete_group_usecase.ts
+- [X] T064 [US7] Update group_store to integrate CreateGroupUsecase, UpdateGroupUsecase, DeleteGroupUsecase in lib/gantt-chart/presenter/group_store.ts
+- [X] T065 [US7] Build GroupManager component (modal) with group list showing all groups, Add Group button, Edit/Delete buttons per group in lib/gantt-chart/ui/group-manager.tsx
+- [X] T066 [US7] Build Add/Edit Group form with fields: name (text input), color (color picker), order (number input), validation errors display in lib/gantt-chart/ui/group-manager.tsx
+- [X] T067 [US7] Implement delete confirmation dialog that checks for associated events and displays appropriate error message in lib/gantt-chart/ui/group-manager.tsx
+- [X] T068 [US7] Add "Manage Groups" button to GanttChart opening GroupManager modal in lib/gantt-chart/ui/gantt-chart.tsx
+- [X] T069 [US7] Update EventBar to reactively update color when group color changes using React.memo with group dependency in lib/gantt-chart/ui/event-bar.tsx
 
 **Checkpoint**: All user stories complete - full feature functionality achieved
 

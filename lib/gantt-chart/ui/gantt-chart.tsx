@@ -70,6 +70,36 @@ export default function GanttChart() {
     loadVersions();
   }, [loadGroups, loadEvents, loadVersions]);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close modals
+      if (e.key === 'Escape') {
+        if (isFormOpen) {
+          handleCloseForm();
+        } else if (isSaveVersionOpen) {
+          setIsSaveVersionOpen(false);
+          setVersionNote('');
+        } else if (isVersionListOpen) {
+          setIsVersionListOpen(false);
+        } else if (isGroupManagerOpen) {
+          setIsGroupManagerOpen(false);
+        }
+      }
+      
+      // Ctrl+S / Cmd+S to save version
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (!isFormOpen && !isVersionListOpen && !isGroupManagerOpen) {
+          setIsSaveVersionOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFormOpen, isSaveVersionOpen, isVersionListOpen, isGroupManagerOpen]);
+
   // Initialize all groups as visible when groups load
   useEffect(() => {
     if (groups.length > 0 && visibleGroupIds.size === 0) {
@@ -125,6 +155,74 @@ export default function GanttChart() {
     applyFilters(events);
   };
 
+  const handleExportData = () => {
+    const data = {
+      events,
+      groups,
+      settings: {
+        visibleStart,
+        visibleEnd,
+        searchKeyword,
+        focusPeriod: null
+      },
+      exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gantt-chart-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        
+        // Validate data structure
+        if (!data.events || !data.groups) {
+          alert('Invalid file format');
+          return;
+        }
+
+        // Import groups first
+        for (const group of data.groups) {
+          try {
+            await createEvent(group);
+          } catch (err) {
+            console.error('Failed to import group:', err);
+          }
+        }
+
+        // Import events
+        for (const event of data.events) {
+          try {
+            await createEvent(event);
+          } catch (err) {
+            console.error('Failed to import event:', err);
+          }
+        }
+
+        alert('Data imported successfully!');
+      } catch (error) {
+        alert('Failed to import data: ' + (error as Error).message);
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset file input
+    e.target.value = '';
+  };
+
   const handleSaveVersion = async () => {
     if (!versionNote.trim()) {
       alert('Please enter a version note');
@@ -172,6 +270,22 @@ export default function GanttChart() {
         <h1 className="text-2xl font-bold text-gray-900">Gantt Chart</h1>
         <div className="flex gap-2">
           <button
+            onClick={handleExportData}
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium"
+            title="Export data to JSON"
+          >
+            Export
+          </button>
+          <label className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium cursor-pointer">
+            Import
+            <input
+              type="file"
+              accept=".json"
+              onChange={handleImportData}
+              className="hidden"
+            />
+          </label>
+          <button
             onClick={() => setIsGroupManagerOpen(true)}
             className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium"
           >
@@ -186,6 +300,7 @@ export default function GanttChart() {
           <button
             onClick={() => setIsSaveVersionOpen(true)}
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium"
+            title="Save Version (Ctrl+S)"
           >
             Save Version
           </button>
