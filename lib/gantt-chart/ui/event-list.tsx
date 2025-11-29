@@ -128,7 +128,6 @@ export default function EventList({
                 ? 'bg-blue-50 border-r-blue-500'
                 : 'bg-white hover:bg-gray-50'
             } ${isDragging ? 'opacity-60' : ''} ${isDragOver ? 'ring-2 ring-blue-300' : ''}`}
-            style={{ minHeight: '52px' }}
             onClick={() => onSelectEvent(event)}
           >
             <div className="flex items-center gap-3">

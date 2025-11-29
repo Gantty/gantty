@@ -330,29 +330,45 @@ export default function VersionList({ onClose }: VersionListProps) {
                 {/* Group Changes */}
                 {diff.groupChanges.length > 0 && (
                   <div>
-                    <h4 className="font-semibold text-purple-700 mb-2">
+                    <h4 className="font-semibold text-purple-900 mb-2">
                       Group Changes ({diff.groupChanges.length})
                     </h4>
                     <div className="space-y-2">
                       {diff.groupChanges.map((change, idx) => (
-                        <div key={idx} className="border border-purple-300 bg-purple-50 rounded p-3 text-sm">
+                        <div
+                          key={idx}
+                          className="border border-purple-300 bg-purple-50 rounded p-3 text-sm text-gray-900"
+                        >
                           {change.type === 'added' && change.newValue && (
-                            <div>Added group: <span className="font-medium">{change.newValue.name}</span></div>
+                            <div>
+                              Added group:{' '}
+                              <span className="font-semibold text-purple-900">{change.newValue.name}</span>
+                            </div>
                           )}
                           {change.type === 'deleted' && change.oldValue && (
-                            <div>Deleted group: <span className="font-medium line-through">{change.oldValue.name}</span></div>
+                            <div>
+                              Deleted group:{' '}
+                              <span className="font-semibold line-through text-purple-900">{change.oldValue.name}</span>
+                            </div>
                           )}
                           {change.type === 'modified' && change.changes && (
                             <div>
-                              <div>Modified group: <span className="font-medium">{change.newValue?.name}</span></div>
+                              <div>
+                                Modified group:{' '}
+                                <span className="font-semibold text-purple-900">{change.newValue?.name}</span>
+                              </div>
                               {change.changes.name && (
                                 <div className="ml-4">
-                                  Name: <span className="text-red-600">{change.changes.name.old}</span> → <span className="text-green-600">{change.changes.name.new}</span>
+                                  Name:{' '}
+                                  <span className="text-red-700 font-semibold">{change.changes.name.old}</span> →{' '}
+                                  <span className="text-green-700 font-semibold">{change.changes.name.new}</span>
                                 </div>
                               )}
                               {change.changes.color && (
                                 <div className="ml-4">
-                                  Color: <span className="text-red-600">{change.changes.color.old}</span> → <span className="text-green-600">{change.changes.color.new}</span>
+                                  Color:{' '}
+                                  <span className="text-red-700 font-semibold">{change.changes.color.old}</span> →{' '}
+                                  <span className="text-green-700 font-semibold">{change.changes.color.new}</span>
                                 </div>
                               )}
                             </div>

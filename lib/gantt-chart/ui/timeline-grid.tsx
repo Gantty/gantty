@@ -92,10 +92,11 @@ export default function TimelineGrid({
       {/* Focus period highlight */}
       {focusOverlay && (
         <div
-          className="absolute top-0 bottom-0 bg-blue-50 opacity-30 z-5 pointer-events-none"
+          className="absolute top-0 bottom-0 z-5 pointer-events-none"
           style={{
             left: `${focusOverlay.left}px`,
-            width: `${focusOverlay.width}px`
+            width: `${focusOverlay.width}px`,
+            backgroundColor: 'rgba(250, 204, 21, 0.45)'
           }}
         />
       )}
