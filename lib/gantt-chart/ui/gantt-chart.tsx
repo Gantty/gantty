@@ -42,7 +42,9 @@ export default function GanttChart() {
     visibleStart,
     visibleEnd,
     totalDays,
-    calculateFromEvents
+    calculateFromEvents,
+    viewMode,
+    dayWidth
   } = useTimelineStore();
 
   const {
@@ -223,7 +225,7 @@ export default function GanttChart() {
 
     if (scrollContainerRef.current) {
       const startOffset = differenceInDays(event.startDate, visibleStart);
-      const left = startOffset * 80;
+      const left = startOffset * dayWidth;
       const containerWidth = scrollContainerRef.current.clientWidth;
 
       // Scroll to center the event start
@@ -463,7 +465,12 @@ export default function GanttChart() {
       >
         {visibleStart && visibleEnd && (
           <div className="min-w-full w-max">
-            <TimelineHeader startDate={visibleStart} endDate={visibleEnd} />
+            <TimelineHeader
+              startDate={visibleStart}
+              endDate={visibleEnd}
+              viewMode={viewMode}
+              dayWidth={dayWidth}
+            />
 
             <div className="flex relative">
               <div className="sticky left-0 z-20 bg-white flex-shrink-0">
@@ -480,6 +487,8 @@ export default function GanttChart() {
                 endDate={visibleEnd}
                 totalDays={totalDays}
                 onSelectEvent={handleEditEvent}
+                viewMode={viewMode}
+                dayWidth={dayWidth}
               />
             </div>
           </div>

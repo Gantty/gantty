@@ -5,9 +5,9 @@ import { useTimelineStore } from '../presenter/timeline_store';
 import { useEventStore } from '../presenter/event_store';
 
 export default function TimeControls() {
-  const { panTimeline, showAll, focusPeriod, setFocusPeriod } = useTimelineStore();
+  const { panTimeline, showAll, focusPeriod, setFocusPeriod, viewMode, setViewMode } = useTimelineStore();
   const { events } = useEventStore();
-  
+
   const [showFocusModal, setShowFocusModal] = useState(false);
   const [focusStart, setFocusStart] = useState('');
   const [focusEnd, setFocusEnd] = useState('');
@@ -70,7 +70,7 @@ export default function TimeControls() {
           </svg>
           Earlier
         </button>
-        
+
         <button
           onClick={handleShowAll}
           className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 transition-colors shadow-sm"
@@ -78,7 +78,7 @@ export default function TimeControls() {
         >
           Show All
         </button>
-        
+
         <button
           onClick={handlePanRight}
           className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 flex items-center gap-1 transition-colors shadow-sm"
@@ -94,11 +94,10 @@ export default function TimeControls() {
 
         <button
           onClick={handleOpenFocusModal}
-          className={`px-3 py-2 border rounded-lg text-sm font-semibold transition-colors shadow-sm ${
-            focusPeriod
-              ? 'bg-blue-50 border-blue-400 text-blue-800 hover:bg-blue-100'
-              : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50 hover:border-gray-400'
-          }`}
+          className={`px-3 py-2 border rounded-lg text-sm font-semibold transition-colors shadow-sm ${focusPeriod
+            ? 'bg-blue-50 border-blue-400 text-blue-800 hover:bg-blue-100'
+            : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50 hover:border-gray-400'
+            }`}
           title="Set focus period"
         >
           {focusPeriod ? 'Focus Period Active' : 'Set Focus Period'}
@@ -115,12 +114,27 @@ export default function TimeControls() {
         )}
       </div>
 
+      <div className="flex bg-gray-100 p-1 rounded-lg border border-gray-200 ml-auto">
+        {(['day', 'week', 'month'] as const).map((mode) => (
+          <button
+            key={mode}
+            onClick={() => setViewMode(mode)}
+            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${viewMode === mode
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200'
+              }`}
+          >
+            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+          </button>
+        ))}
+      </div>
+
       {/* Focus Period Modal */}
       {showFocusModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Set Focus Period</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">

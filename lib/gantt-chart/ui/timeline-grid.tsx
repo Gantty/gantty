@@ -6,6 +6,8 @@ import { differenceInDays } from '@/lib/shared/utils/date';
 import EventBar from './event-bar';
 import { useTimelineStore } from '../presenter/timeline_store';
 
+import { ViewMode } from '../presenter/timeline_store';
+
 interface TimelineGridProps {
   events: Event[];
   groups: Group[];
@@ -13,6 +15,8 @@ interface TimelineGridProps {
   endDate: string;
   totalDays: number;
   onSelectEvent: (event: Event) => void;
+  viewMode: ViewMode;
+  dayWidth: number;
 }
 
 export default function TimelineGrid({
@@ -21,7 +25,9 @@ export default function TimelineGrid({
   startDate,
   endDate,
   totalDays,
-  onSelectEvent
+  onSelectEvent,
+  viewMode,
+  dayWidth
 }: TimelineGridProps) {
   const { focusPeriod } = useTimelineStore();
 
@@ -33,10 +39,34 @@ export default function TimelineGrid({
   const todayOffset = differenceInDays(today, startDate);
   const isTodayVisible = todayOffset >= 0 && todayOffset < totalDays;
 
-  // Calculate 5-day guide line positions
+  // Calculate guide line positions based on viewMode
   const guideLinePositions: number[] = [];
-  for (let i = 5; i < totalDays; i += 5) {
-    guideLinePositions.push(i);
+
+  if (viewMode === 'day') {
+    // Every 5 days
+    for (let i = 5; i < totalDays; i += 5) {
+      guideLinePositions.push(i);
+    }
+  } else if (viewMode === 'week') {
+    // Every week (Monday)
+    const start = new Date(startDate);
+    for (let i = 0; i < totalDays; i++) {
+      const current = new Date(start);
+      current.setDate(start.getDate() + i);
+      if (current.getDay() === 1) { // Monday
+        guideLinePositions.push(i);
+      }
+    }
+  } else if (viewMode === 'month') {
+    // Every month (1st)
+    const start = new Date(startDate);
+    for (let i = 0; i < totalDays; i++) {
+      const current = new Date(start);
+      current.setDate(start.getDate() + i);
+      if (current.getDate() === 1) { // 1st of month
+        guideLinePositions.push(i);
+      }
+    }
   }
 
   // Calculate focus period overlay
@@ -49,8 +79,8 @@ export default function TimelineGrid({
 
     if (focusEndDay >= 0 && focusStartDay < totalDays) {
       focusOverlay = {
-        left: focusStartDay * 80,
-        width: (focusEndDay - focusStartDay + 1) * 80
+        left: focusStartDay * dayWidth,
+        width: (focusEndDay - focusStartDay + 1) * dayWidth
       };
     }
   }
@@ -58,7 +88,7 @@ export default function TimelineGrid({
   return (
     <div
       className="flex flex-col relative bg-white"
-      style={{ minWidth: `${totalDays * 80}px` }}
+      style={{ minWidth: `${totalDays * dayWidth}px` }}
     >
       {/* Focus period highlight */}
       {focusOverlay && (
@@ -75,17 +105,17 @@ export default function TimelineGrid({
       {isTodayVisible && (
         <div
           className="absolute top-0 bottom-0 w-0.5 bg-red-500 z-15 pointer-events-none"
-          style={{ left: `${todayOffset * 80}px` }}
+          style={{ left: `${todayOffset * dayWidth}px` }}
         />
       )}
 
-      {/* 5-day guide lines - spans entire height */}
+      {/* Guide lines - spans entire height */}
       {guideLinePositions.map((position) => (
         <div
           key={position}
           className="absolute top-0 bottom-0 w-px bg-gray-300 opacity-30 z-5 pointer-events-none"
           style={{
-            left: `${position * 80}px`,
+            left: `${position * dayWidth}px`,
             borderLeft: '1px dashed #9CA3AF'
           }}
         />
@@ -110,7 +140,13 @@ export default function TimelineGrid({
               {Array.from({ length: totalDays }, (_, i) => (
                 <div
                   key={i}
-                  className="border-r border-gray-100 min-w-[80px]"
+                  className={`border-r border-gray-100 box-border ${viewMode === 'month' ? 'border-r-0' : ''
+                    }`}
+                  style={{
+                    width: `${dayWidth}px`,
+                    minWidth: `${dayWidth}px`,
+                    borderRightWidth: viewMode === 'month' ? '0px' : '1px'
+                  }}
                 />
               ))}
             </div>
@@ -122,6 +158,7 @@ export default function TimelineGrid({
               startOffset={startOffset}
               duration={duration}
               onClick={() => onSelectEvent(event)}
+              dayWidth={dayWidth}
             />
           </div>
         );

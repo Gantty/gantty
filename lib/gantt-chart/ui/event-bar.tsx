@@ -9,6 +9,7 @@ interface EventBarProps {
   startOffset: number;
   duration: number;
   onClick: () => void;
+  dayWidth: number;
 }
 
 const EventBar = React.memo(function EventBar({
@@ -16,10 +17,11 @@ const EventBar = React.memo(function EventBar({
   color,
   startOffset,
   duration,
-  onClick
+  onClick,
+  dayWidth
 }: EventBarProps) {
-  const left = startOffset * 80; // 80px per day
-  const width = duration * 80;
+  const left = startOffset * dayWidth;
+  const width = duration * dayWidth;
 
   return (
     <div
@@ -28,7 +30,7 @@ const EventBar = React.memo(function EventBar({
         left: `${left}px`,
         width: `${width}px`,
         backgroundColor: color,
-        minWidth: '80px'
+        minWidth: `${dayWidth}px`
       }}
       onClick={onClick}
     >
