@@ -264,19 +264,19 @@ export default function GanttChart() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-300 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b-2 border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
         <h1 className="text-2xl font-bold text-gray-900">Gantt Chart</h1>
         <div className="flex gap-2">
           <button
             onClick={handleExportData}
-            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium"
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 hover:border-gray-400 font-semibold transition-colors shadow-sm"
             title="Export data to JSON"
           >
             Export
           </button>
-          <label className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium cursor-pointer">
+          <label className="px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 hover:border-gray-400 font-semibold cursor-pointer transition-colors shadow-sm">
             Import
             <input
               type="file"
@@ -287,26 +287,26 @@ export default function GanttChart() {
           </label>
           <button
             onClick={() => setIsGroupManagerOpen(true)}
-            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium"
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 hover:border-gray-400 font-semibold transition-colors shadow-sm"
           >
             Manage Groups
           </button>
           <button
             onClick={() => setIsVersionListOpen(true)}
-            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium"
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 hover:border-gray-400 font-semibold transition-colors shadow-sm"
           >
             Version History
           </button>
           <button
             onClick={() => setIsSaveVersionOpen(true)}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold transition-colors shadow-sm"
             title="Save Version (Ctrl+S)"
           >
             Save Version
           </button>
           <button
             onClick={handleCreateEvent}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-colors shadow-sm"
           >
             Add Event
           </button>
@@ -314,7 +314,7 @@ export default function GanttChart() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-gray-50 border-b border-gray-300 px-6 py-4">
+      <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex gap-4 items-start">
           <div className="flex-1 max-w-md">
             <SearchBar onSearch={handleFilterChange} />
@@ -374,26 +374,26 @@ export default function GanttChart() {
       {/* Save Version Modal */}
       {isSaveVersionOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Save Version</h2>
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Save Version</h2>
             
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Version Note
               </label>
               <textarea
                 value={versionNote}
                 onChange={(e) => setVersionNote(e.target.value)}
                 placeholder="Describe the changes in this version..."
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={3}
               />
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button
                 onClick={handleSaveVersion}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium"
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors"
               >
                 Save
               </button>
@@ -402,7 +402,7 @@ export default function GanttChart() {
                   setIsSaveVersionOpen(false);
                   setVersionNote('');
                 }}
-                className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium"
+                className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 font-medium transition-colors"
               >
                 Cancel
               </button>

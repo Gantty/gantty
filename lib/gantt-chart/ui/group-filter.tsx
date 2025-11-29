@@ -26,25 +26,25 @@ export default function GroupFilter({ groups, onFilterChange }: GroupFilterProps
   const someSelected = groups.some(g => visibleGroupIds.has(g.id)) && !allSelected;
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg p-4">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-700">Filter by Group</h3>
+        <h3 className="text-sm font-semibold text-gray-900">Filter by Group</h3>
         <button
           onClick={handleSelectAll}
-          className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+          className="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors"
         >
           {allSelected ? 'Deselect All' : 'Select All'}
         </button>
       </div>
       
-      <div className="space-y-2">
+      <div className="space-y-1">
         {groups.map((group) => {
           const isChecked = visibleGroupIds.has(group.id);
           
           return (
             <label
               key={group.id}
-              className="flex items-center cursor-pointer hover:bg-gray-50 rounded px-2 py-1.5"
+              className="flex items-center cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-2 transition-colors"
             >
               <input
                 type="checkbox"
@@ -54,10 +54,10 @@ export default function GroupFilter({ groups, onFilterChange }: GroupFilterProps
               />
               <div className="ml-3 flex items-center flex-1">
                 <div
-                  className="w-4 h-4 rounded mr-2"
+                  className="w-4 h-4 rounded mr-2 border border-gray-200"
                   style={{ backgroundColor: group.color }}
                 />
-                <span className="text-sm text-gray-700">{group.name}</span>
+                <span className="text-sm text-gray-900">{group.name}</span>
               </div>
             </label>
           );

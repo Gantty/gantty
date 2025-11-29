@@ -37,12 +37,12 @@ export default function VersionList({ onClose }: VersionListProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-        <div className="px-6 py-4 border-b border-gray-300 flex items-center justify-between">
-          <h2 className="text-xl font-bold">Version History</h2>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+        <div className="px-6 py-4 border-b-2 border-gray-200 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">Version History</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -52,20 +52,20 @@ export default function VersionList({ onClose }: VersionListProps) {
 
         {!showDiff ? (
           <>
-            <div className="px-6 py-4 border-b border-gray-300 flex items-center justify-between">
-              <p className="text-sm text-gray-600">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+              <p className="text-sm text-gray-700">
                 Select 2 versions to compare
                 {selectedVersionIds.length > 0 && (
-                  <span className="ml-2 font-medium">
+                  <span className="ml-2 font-semibold text-blue-600">
                     ({selectedVersionIds.length} selected)
                   </span>
                 )}
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 {selectedVersionIds.length > 0 && (
                   <button
                     onClick={clearSelection}
-                    className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 text-sm font-medium transition-colors"
                   >
                     Clear Selection
                   </button>
@@ -73,9 +73,9 @@ export default function VersionList({ onClose }: VersionListProps) {
                 <button
                   onClick={handleCompare}
                   disabled={!canCompare || isComparing}
-                  className={`px-4 py-1.5 rounded text-sm font-medium ${
+                  className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     canCompare && !isComparing
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >
@@ -98,10 +98,10 @@ export default function VersionList({ onClose }: VersionListProps) {
                     return (
                       <div
                         key={version.id}
-                        className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
                           isSelected
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-300 hover:border-gray-400 bg-white'
+                            ? 'border-blue-500 bg-blue-50 shadow-md'
+                            : 'border-gray-200 hover:border-gray-300 bg-white hover:shadow-sm'
                         }`}
                         onClick={() => selectVersion(version.id, !isSelected)}
                       >
@@ -114,16 +114,16 @@ export default function VersionList({ onClose }: VersionListProps) {
                               className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <div>
-                              <h3 className="font-semibold text-gray-900">
+                              <h3 className="font-bold text-gray-900">
                                 Version {version.number}
                               </h3>
-                              <p className="text-sm text-gray-600 mt-1">
+                              <p className="text-sm text-gray-700 mt-1">
                                 {version.note || 'No description'}
                               </p>
                               <p className="text-xs text-gray-500 mt-2">
                                 {format(timestamp, 'PPpp')}
                               </p>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-gray-600 mt-1">
                                 {version.snapshot.events.length} events, {version.snapshot.groups.length} groups
                               </p>
                             </div>
@@ -133,7 +133,7 @@ export default function VersionList({ onClose }: VersionListProps) {
                               e.stopPropagation();
                               handleDelete(version.id, version.number);
                             }}
-                            className="text-red-600 hover:text-red-700 text-sm"
+                            className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
                           >
                             Delete
                           </button>
@@ -146,10 +146,10 @@ export default function VersionList({ onClose }: VersionListProps) {
             </div>
           </>
         ) : (
-          <div className="flex-1 overflow-auto p-6">
+          <div className="flex-1 overflow-auto p-6 bg-gray-50">
             <button
               onClick={() => setShowDiff(false)}
-              className="mb-4 flex items-center gap-2 text-blue-600 hover:text-blue-700"
+              className="mb-4 flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -159,18 +159,18 @@ export default function VersionList({ onClose }: VersionListProps) {
 
             {diff && (
               <div className="space-y-6">
-                <h3 className="text-lg font-bold">Comparison Results</h3>
+                <h3 className="text-lg font-bold text-gray-900">Comparison Results</h3>
 
                 {/* Added Events */}
                 {diff.addedEvents.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-green-700 mb-2">
+                  <div className="bg-white rounded-xl p-4 border-2 border-green-200">
+                    <h4 className="font-bold text-green-700 mb-3">
                       Added Events ({diff.addedEvents.length})
                     </h4>
                     <div className="space-y-2">
                       {diff.addedEvents.map((event) => (
-                        <div key={event.id} className="border border-green-300 bg-green-50 rounded p-3">
-                          <div className="font-medium">{event.name}</div>
+                        <div key={event.id} className="border border-green-300 bg-green-50 rounded-lg p-3">
+                          <div className="font-semibold text-gray-900">{event.name}</div>
                           <div className="text-sm text-gray-600 mt-1">
                             {event.startDate} to {event.endDate}
                           </div>
@@ -182,14 +182,14 @@ export default function VersionList({ onClose }: VersionListProps) {
 
                 {/* Deleted Events */}
                 {diff.deletedEvents.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-red-700 mb-2">
+                  <div className="bg-white rounded-xl p-4 border-2 border-red-200">
+                    <h4 className="font-bold text-red-700 mb-3">
                       Deleted Events ({diff.deletedEvents.length})
                     </h4>
                     <div className="space-y-2">
                       {diff.deletedEvents.map((event) => (
-                        <div key={event.id} className="border border-red-300 bg-red-50 rounded p-3">
-                          <div className="font-medium line-through">{event.name}</div>
+                        <div key={event.id} className="border border-red-300 bg-red-50 rounded-lg p-3">
+                          <div className="font-semibold text-gray-900 line-through">{event.name}</div>
                           <div className="text-sm text-gray-600 mt-1">
                             {event.startDate} to {event.endDate}
                           </div>
@@ -201,8 +201,8 @@ export default function VersionList({ onClose }: VersionListProps) {
 
                 {/* Modified Events */}
                 {diff.modifiedEvents.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-blue-700 mb-2">
+                  <div className="bg-white rounded-xl p-4 border-2 border-blue-200">
+                    <h4 className="font-bold text-blue-700 mb-3">
                       Modified Events ({diff.modifiedEvents.length})
                     </h4>
                     <div className="space-y-3">

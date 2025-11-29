@@ -62,7 +62,7 @@ export default function TimeControls() {
       <div className="flex items-center gap-2">
         <button
           onClick={handlePanLeft}
-          className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium flex items-center gap-1"
+          className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 flex items-center gap-1 transition-colors shadow-sm"
           title="Pan left 7 days"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ export default function TimeControls() {
         
         <button
           onClick={handleShowAll}
-          className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+          className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 transition-colors shadow-sm"
           title="Show all events"
         >
           Show All
@@ -81,7 +81,7 @@ export default function TimeControls() {
         
         <button
           onClick={handlePanRight}
-          className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium flex items-center gap-1"
+          className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 flex items-center gap-1 transition-colors shadow-sm"
           title="Pan right 7 days"
         >
           Later
@@ -94,10 +94,10 @@ export default function TimeControls() {
 
         <button
           onClick={handleOpenFocusModal}
-          className={`px-3 py-1.5 border rounded text-sm font-medium ${
+          className={`px-3 py-2 border rounded-lg text-sm font-semibold transition-colors shadow-sm ${
             focusPeriod
-              ? 'bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100'
-              : 'bg-white border-gray-300 hover:bg-gray-50'
+              ? 'bg-blue-50 border-blue-400 text-blue-800 hover:bg-blue-100'
+              : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50 hover:border-gray-400'
           }`}
           title="Set focus period"
         >
@@ -107,7 +107,7 @@ export default function TimeControls() {
         {focusPeriod && (
           <button
             onClick={handleClearFocus}
-            className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium text-gray-600"
+            className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold text-gray-900 transition-colors shadow-sm"
             title="Clear focus period"
           >
             Clear Focus
@@ -118,51 +118,51 @@ export default function TimeControls() {
       {/* Focus Period Modal */}
       {showFocusModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Set Focus Period</h2>
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Set Focus Period</h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Start Date
                 </label>
                 <input
                   type="date"
                   value={focusStart}
                   onChange={(e) => setFocusStart(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   End Date
                 </label>
                 <input
                   type="date"
                   value={focusEnd}
                   onChange={(e) => setFocusEnd(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium"
                 />
               </div>
 
               {focusError && (
-                <div className="text-sm text-red-600">
+                <div className="text-sm text-red-700 font-medium bg-red-50 border border-red-200 rounded-lg p-2">
                   {focusError}
                 </div>
               )}
             </div>
 
-            <div className="flex gap-2 mt-6">
+            <div className="flex gap-3 mt-6">
               <button
                 onClick={handleApplyFocus}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-colors"
               >
                 Apply
               </button>
               <button
                 onClick={() => setShowFocusModal(false)}
-                className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium"
+                className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 font-semibold transition-colors"
               >
                 Cancel
               </button>

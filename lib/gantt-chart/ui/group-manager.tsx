@@ -94,12 +94,12 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
-        <div className="px-6 py-4 border-b border-gray-300 flex items-center justify-between">
-          <h2 className="text-xl font-bold">Manage Groups</h2>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+        <div className="px-6 py-4 border-b-2 border-gray-200 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">Manage Groups</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -107,12 +107,12 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-6 bg-gray-50">
           {!showingForm && (
             <div className="mb-4">
               <button
                 onClick={handleStartCreate}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors shadow-sm"
               >
                 Add New Group
               </button>
@@ -121,14 +121,14 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
 
           {/* Group Form */}
           {showingForm && (
-            <div className="mb-6 border border-gray-300 rounded-lg p-4 bg-gray-50">
-              <h3 className="font-semibold mb-4">
+            <div className="mb-6 border-2 border-blue-200 rounded-xl p-5 bg-white shadow-sm">
+              <h3 className="font-bold text-gray-900 mb-4">
                 {editingGroup ? 'Edit Group' : 'New Group'}
               </h3>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Name
                   </label>
                   <input
@@ -136,12 +136,12 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter group name"
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Color
                   </label>
                   <div className="flex items-center gap-3">
@@ -149,47 +149,47 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
                       type="color"
                       value={formData.color}
                       onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                      className="w-16 h-10 border border-gray-300 rounded cursor-pointer"
+                      className="w-16 h-10 border border-gray-300 rounded-lg cursor-pointer"
                     />
                     <input
                       type="text"
                       value={formData.color}
                       onChange={(e) => setFormData({ ...formData, color: e.target.value })}
                       placeholder="#RRGGBB"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
                     Display Order
                   </label>
                   <input
                     type="number"
                     value={formData.order}
                     onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium"
                   />
                 </div>
 
                 {formError && (
-                  <div className="text-sm text-red-600">
+                  <div className="text-sm text-red-700 font-medium bg-red-50 border border-red-200 rounded-lg p-2">
                     {formError}
                   </div>
                 )}
               </div>
 
-              <div className="flex gap-2 mt-4">
+              <div className="flex gap-3 mt-5">
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-colors"
                 >
                   Save
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium"
+                  className="px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 font-semibold transition-colors"
                 >
                   Cancel
                 </button>
@@ -198,8 +198,8 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
           )}
 
           {/* Group List */}
-          <div className="space-y-2">
-            <h3 className="font-semibold mb-3">Existing Groups</h3>
+          <div className="space-y-3">
+            <h3 className="font-bold text-gray-900 mb-3">Existing Groups</h3>
             {groups.length === 0 ? (
               <p className="text-gray-500 italic">No groups available</p>
             ) : (
@@ -208,31 +208,31 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
                 .map((group) => (
                   <div
                     key={group.id}
-                    className="border border-gray-300 rounded-lg p-4 flex items-center justify-between bg-white hover:bg-gray-50"
+                    className="border-2 border-gray-200 rounded-xl p-4 flex items-center justify-between bg-white hover:border-gray-300 hover:shadow-sm transition-all"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded"
+                        className="w-10 h-10 rounded-lg border-2 border-gray-200"
                         style={{ backgroundColor: group.color }}
                       />
                       <div>
-                        <div className="font-medium">{group.name}</div>
-                        <div className="text-sm text-gray-500">
+                        <div className="font-semibold text-gray-900">{group.name}</div>
+                        <div className="text-sm text-gray-600">
                           {group.color} • Order: {group.order}
-                          {group.isDefault && <span className="ml-2 text-blue-600">(Default)</span>}
+                          {group.isDefault && <span className="ml-2 text-blue-600 font-medium">(Default)</span>}
                         </div>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleStartEdit(group)}
-                        className="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                        className="px-3 py-1.5 bg-white border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 hover:border-gray-400 text-sm font-semibold transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(group)}
-                        className="px-3 py-1.5 bg-red-50 border border-red-300 text-red-700 rounded hover:bg-red-100 text-sm font-medium"
+                        className="px-3 py-1.5 bg-red-50 border border-red-300 text-red-700 rounded-lg hover:bg-red-100 hover:border-red-400 text-sm font-semibold transition-colors"
                       >
                         Delete
                       </button>
@@ -243,7 +243,7 @@ export default function GroupManager({ onClose }: GroupManagerProps) {
           </div>
 
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+            <div className="mt-4 p-3 bg-red-50 border-2 border-red-200 rounded-lg text-red-700 text-sm">
               {error}
             </div>
           )}

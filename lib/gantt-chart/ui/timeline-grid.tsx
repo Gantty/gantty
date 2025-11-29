@@ -56,7 +56,7 @@ export default function TimelineGrid({
   }
 
   return (
-    <div className="flex flex-col relative">
+    <div className="flex flex-col relative bg-white">
       {/* Focus period highlight */}
       {focusOverlay && (
         <div
