@@ -92,6 +92,7 @@ const EventBar = React.memo(function EventBar({
           backgroundColor: color,
           minWidth: `${dayWidth}px`
         }}
+        data-prevent-pan="true"
         onClick={onClick}
         onMouseEnter={() => {
           setIsTooltipVisible(true);
