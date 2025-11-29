@@ -6,7 +6,8 @@ import {
   GroupChange,
   FieldChange,
   Event,
-  Group
+  Group,
+  ReorderedEvent
 } from './types';
 import { VersionRepository } from './version_repository';
 import { NotFoundError } from './errors';
@@ -35,11 +36,17 @@ export class CompareVersionsUsecase {
       addedEvents: eventDiff.added,
       deletedEvents: eventDiff.deleted,
       modifiedEvents: eventDiff.modified,
+      reorderedEvents: eventDiff.reordered,
       groupChanges
     };
   }
 
-  private compareEvents(oldEvents: Event[], newEvents: Event[]) {
+  private compareEvents(oldEvents: Event[], newEvents: Event[]): {
+    added: Event[];
+    deleted: Event[];
+    modified: ModifiedEvent[];
+    reordered: ReorderedEvent[];
+  } {
     const oldMap = new Map(oldEvents.map(e => [e.id, e]));
     const newMap = new Map(newEvents.map(e => [e.id, e]));
 
@@ -48,6 +55,9 @@ export class CompareVersionsUsecase {
 
     // Deleted: in old but not in new
     const deleted = oldEvents.filter(e => !newMap.has(e.id));
+
+    const addedIds = new Set(added.map((e) => e.id));
+    const deletedIds = new Set(deleted.map((e) => e.id));
 
     // Modified: in both but different
     const modified: ModifiedEvent[] = [];
@@ -66,7 +76,9 @@ export class CompareVersionsUsecase {
       }
     }
 
-    return { added, deleted, modified };
+    const reordered = this.detectReorderedEvents(oldEvents, newEvents, addedIds, deletedIds);
+
+    return { added, deleted, modified, reordered };
   }
 
   private detectEventChanges(oldEvent: Event, newEvent: Event): EventChanges {
@@ -93,6 +105,39 @@ export class CompareVersionsUsecase {
     }
 
     return changes;
+  }
+
+  private detectReorderedEvents(
+    oldEvents: Event[],
+    newEvents: Event[],
+    addedIds: Set<string>,
+    deletedIds: Set<string>
+  ): ReorderedEvent[] {
+    // Ignore items that are added or deleted so we only compare the shared set
+    const commonOldOrder = oldEvents.filter((e) => !deletedIds.has(e.id));
+    const commonNewOrder = newEvents.filter((e) => !addedIds.has(e.id));
+
+    const oldOrderIndex = new Map(commonOldOrder.map((e, idx) => [e.id, idx]));
+    const newOrderIndex = new Map(commonNewOrder.map((e, idx) => [e.id, idx]));
+
+    const reordered: ReorderedEvent[] = [];
+
+    for (const [id, oldPos] of oldOrderIndex) {
+      const newPos = newOrderIndex.get(id);
+      if (newPos === undefined || newPos === oldPos) continue;
+
+      const event = newEvents.find((e) => e.id === id);
+      if (!event) continue;
+
+      reordered.push({
+        eventId: id,
+        fromIndex: oldPos,
+        toIndex: newPos,
+        name: event.name
+      });
+    }
+
+    return reordered;
   }
 
   private compareGroups(oldGroups: Group[], newGroups: Group[]): GroupChange[] {

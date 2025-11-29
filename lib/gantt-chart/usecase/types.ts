@@ -50,6 +50,7 @@ export interface VersionDiff {
   addedEvents: Event[];
   deletedEvents: Event[];
   modifiedEvents: ModifiedEvent[];
+  reorderedEvents: ReorderedEvent[];
   groupChanges: GroupChange[];
 }
 
@@ -66,6 +67,13 @@ export interface EventChanges {
   startDate?: FieldChange<string>;
   endDate?: FieldChange<string>;
   groupId?: FieldChange<string>;
+}
+
+export interface ReorderedEvent {
+  eventId: string;
+  fromIndex: number;
+  toIndex: number;
+  name: string;
 }
 
 export interface FieldChange<T> {

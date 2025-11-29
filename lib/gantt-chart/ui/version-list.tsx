@@ -201,48 +201,70 @@ export default function VersionList({ onClose }: VersionListProps) {
 
                 {/* Modified Events */}
                 {diff.modifiedEvents.length > 0 && (
-                  <div className="bg-white rounded-xl p-4 border-2 border-blue-200">
-                    <h4 className="font-bold text-blue-700 mb-3">
+                  <div className="bg-white rounded-xl p-4 border border-blue-200 shadow-sm">
+                    <h4 className="font-semibold text-blue-900 mb-3">
                       Modified Events ({diff.modifiedEvents.length})
                     </h4>
                     <div className="space-y-3">
                       {diff.modifiedEvents.map((modified) => (
-                        <div key={modified.eventId} className="border border-blue-300 bg-blue-50 rounded p-3">
-                          <div className="font-medium">{modified.newValue.name}</div>
-                          <div className="text-sm mt-2 space-y-1">
+                        <div key={modified.eventId} className="border border-slate-200 bg-white rounded-lg p-3 shadow-sm">
+                          <div className="font-semibold text-gray-900">{modified.newValue.name}</div>
+                          <div className="text-sm mt-2 space-y-1 text-gray-900">
                             {modified.changes.name && (
                               <div>
-                                <span className="font-medium">Name: </span>
-                                <span className="text-red-600 line-through">{modified.changes.name.old}</span>
+                                <span className="font-semibold">Name: </span>
+                                <span className="text-rose-700 line-through font-medium">{modified.changes.name.old}</span>
                                 {' → '}
-                                <span className="text-green-600">{modified.changes.name.new}</span>
+                                <span className="text-emerald-700 font-semibold">{modified.changes.name.new}</span>
                               </div>
                             )}
                             {modified.changes.startDate && (
                               <div>
-                                <span className="font-medium">Start: </span>
-                                <span className="text-red-600 line-through">{modified.changes.startDate.old}</span>
+                                <span className="font-semibold">Start: </span>
+                                <span className="text-rose-700 line-through font-medium">{modified.changes.startDate.old}</span>
                                 {' → '}
-                                <span className="text-green-600">{modified.changes.startDate.new}</span>
+                                <span className="text-emerald-700 font-semibold">{modified.changes.startDate.new}</span>
                               </div>
                             )}
                             {modified.changes.endDate && (
                               <div>
-                                <span className="font-medium">End: </span>
-                                <span className="text-red-600 line-through">{modified.changes.endDate.old}</span>
+                                <span className="font-semibold">End: </span>
+                                <span className="text-rose-700 line-through font-medium">{modified.changes.endDate.old}</span>
                                 {' → '}
-                                <span className="text-green-600">{modified.changes.endDate.new}</span>
+                                <span className="text-emerald-700 font-semibold">{modified.changes.endDate.new}</span>
                               </div>
                             )}
                             {modified.changes.description && (
                               <div>
-                                <span className="font-medium">Description: </span>
-                                <span className="text-red-600 line-through">{modified.changes.description.old}</span>
+                                <span className="font-semibold">Description: </span>
+                                <span className="text-rose-700 line-through font-medium">{modified.changes.description.old}</span>
                                 {' → '}
-                                <span className="text-green-600">{modified.changes.description.new}</span>
+                                <span className="text-emerald-700 font-semibold">{modified.changes.description.new}</span>
                               </div>
                             )}
                           </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reordered Events */}
+                {diff.reorderedEvents.length > 0 && (
+                  <div className="bg-white rounded-xl p-4 border-2 border-amber-200">
+                    <h4 className="font-bold text-amber-800 mb-3">
+                      Reordered Events ({diff.reorderedEvents.length})
+                    </h4>
+                    <div className="space-y-2">
+                      {diff.reorderedEvents.map((event) => (
+                        <div
+                          key={event.eventId}
+                          className="border border-amber-300 bg-amber-50 rounded-lg p-3 text-sm text-gray-900 flex items-center justify-between gap-4"
+                        >
+                          <span className="font-semibold">{event.name}</span>
+                          <span className="text-xs sm:text-sm text-gray-800">
+                            #{event.fromIndex + 1} → #{event.toIndex + 1}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -288,6 +310,7 @@ export default function VersionList({ onClose }: VersionListProps) {
                 {diff.addedEvents.length === 0 &&
                   diff.deletedEvents.length === 0 &&
                   diff.modifiedEvents.length === 0 &&
+                  diff.reorderedEvents.length === 0 &&
                   diff.groupChanges.length === 0 && (
                     <div className="text-center py-8 text-gray-500">
                       No changes detected between these versions
