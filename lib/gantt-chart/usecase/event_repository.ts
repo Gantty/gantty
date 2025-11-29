@@ -47,4 +47,10 @@ export interface EventRepository {
    * @returns Promise resolving to array of events in that group
    */
   getByGroupId(groupId: string): Promise<Event[]>;
+
+  /**
+   * Persist a new ordering for events.
+   * @param orderedEvents - Events in the desired order
+   */
+  reorder(orderedEvents: Event[]): Promise<void>;
 }

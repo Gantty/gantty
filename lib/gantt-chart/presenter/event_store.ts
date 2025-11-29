@@ -25,6 +25,7 @@ interface EventStoreState {
   updateEvent: (id: string, data: UpdateEventData) => Promise<void>;
   deleteEvent: (id: string) => Promise<void>;
   selectEvent: (event: Event | null) => void;
+  reorderEvents: (activeId: string, overId: string) => Promise<void>;
   clearError: () => void;
 }
 
@@ -92,6 +93,28 @@ export const useEventStore = create<EventStoreState>((set, get) => ({
 
   selectEvent: (event: Event | null) => {
     set({ selectedEvent: event });
+  },
+
+  reorderEvents: async (activeId: string, overId: string) => {
+    const currentEvents = get().events;
+    const fromIndex = currentEvents.findIndex((e) => e.id === activeId);
+    const toIndex = currentEvents.findIndex((e) => e.id === overId);
+
+    if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) {
+      return;
+    }
+
+    const reordered = [...currentEvents];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, moved);
+
+    set({ events: reordered });
+
+    try {
+      await eventRepository.reorder(reordered);
+    } catch (error) {
+      set({ error: (error as Error).message });
+    }
   },
 
   clearError: () => {

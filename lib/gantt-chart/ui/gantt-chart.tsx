@@ -28,7 +28,8 @@ export default function GanttChart() {
     createEvent,
     updateEvent,
     deleteEvent,
-    selectEvent
+    selectEvent,
+    reorderEvents
   } = useEventStore();
 
   const {
@@ -485,6 +486,7 @@ export default function GanttChart() {
                 <EventList
                   events={displayEvents}
                   onSelectEvent={handleFocusEvent}
+                  onReorder={reorderEvents}
                   selectedEventId={selectedEvent?.id || null}
                 />
               </div>

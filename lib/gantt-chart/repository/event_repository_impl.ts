@@ -147,6 +147,26 @@ export class EventRepositoryImpl implements EventRepository {
     return events.filter(e => e.groupId === groupId);
   }
 
+  async reorder(orderedEvents: Event[]): Promise<void> {
+    const existing = await this.getAll();
+
+    if (orderedEvents.length !== existing.length) {
+      throw new ValidationError('Event order payload is invalid', 'order', 'length_mismatch');
+    }
+
+    const existingIds = new Set(existing.map((e) => e.id));
+    const seen = new Set<string>();
+
+    for (const event of orderedEvents) {
+      if (!existingIds.has(event.id) || seen.has(event.id)) {
+        throw new ValidationError('Event order payload is invalid', 'order', 'invalid_id');
+      }
+      seen.add(event.id);
+    }
+
+    await this.saveEvents(orderedEvents);
+  }
+
   private async saveEvents(events: Event[]): Promise<void> {
     const stored: StoredEvents = {
       version: '1.0',
