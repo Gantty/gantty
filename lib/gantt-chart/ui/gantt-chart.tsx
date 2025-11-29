@@ -136,108 +136,86 @@ export default function GanttChart() {
     }
   }, [filteredEvents, events, calculateFromEvents]);
 
-  // Drag-to-pan handlers
-  useEffect(() => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    // Only drag with primary button (usually left click)
+    if (!e.isPrimary || e.button !== 0) return;
+
+    const target = e.target as HTMLElement;
+
+    // Don't drag if clicking on form elements
+    if (
+      target.tagName === 'BUTTON' ||
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.tagName === 'SELECT' ||
+      target.closest('button') // Check for nested elements in buttons
+    ) {
+      return;
+    }
+
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let rafId: number | null = null;
+    isDragging.current = true;
+    hasDragged.current = false;
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+    scrollStartPos.current = { left: container.scrollLeft, top: container.scrollTop };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      // Only drag with left mouse button
-      if (e.button !== 0) return;
+    container.style.cursor = 'grabbing';
+    container.style.userSelect = 'none';
 
-      const target = e.target as HTMLElement;
+    // Capture pointer to track movement even outside container
+    container.setPointerCapture(e.pointerId);
+  };
 
-      // Don't drag if clicking on form elements
-      if (
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.tagName === 'SELECT'
-      ) {
-        return;
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const dx = dragStartPos.current.x - e.clientX;
+    const dy = dragStartPos.current.y - e.clientY;
+
+    // Mark as dragged if moved more than 3 pixels
+    if (!hasDragged.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+      hasDragged.current = true;
+    }
+
+    if (hasDragged.current) {
+      // Manually update scroll position for immediate feedback
+      // We can still use RAF if we want, but direct update is often fine for scroll
+      // Let's stick to RAF for smoothness if possible, but we need to be careful with React events
+      // Actually, direct assignment is usually fine for scrollLeft/Top
+      container.scrollLeft = scrollStartPos.current.left + dx;
+      container.scrollTop = scrollStartPos.current.top + dy;
+
+      e.preventDefault();
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (isDragging.current) {
+      const container = scrollContainerRef.current;
+      if (container) {
+        container.releasePointerCapture(e.pointerId);
+        container.style.cursor = 'grab';
+        container.style.userSelect = '';
       }
+    }
 
-      isDragging.current = true;
+    isDragging.current = false;
+    // Note: hasDragged is reset in onClickCapture or next down
+  };
+
+  const handleClickCapture = (e: React.MouseEvent) => {
+    // Prevent clicks if we just finished dragging
+    if (hasDragged.current) {
+      e.preventDefault();
+      e.stopPropagation();
       hasDragged.current = false;
-      dragStartPos.current = { x: e.clientX, y: e.clientY };
-      scrollStartPos.current = { left: container.scrollLeft, top: container.scrollTop };
-      container.style.cursor = 'grabbing';
-      container.style.userSelect = 'none';
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging.current) return;
-
-      const dx = dragStartPos.current.x - e.clientX;
-      const dy = dragStartPos.current.y - e.clientY;
-
-      // Mark as dragged if moved more than 3 pixels
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-        hasDragged.current = true;
-      }
-
-      if (hasDragged.current) {
-        // Use requestAnimationFrame for smoother scrolling
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-        }
-
-        rafId = requestAnimationFrame(() => {
-          container.scrollLeft = scrollStartPos.current.left + dx;
-          container.scrollTop = scrollStartPos.current.top + dy;
-        });
-
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
-    const handleMouseUp = (e: MouseEvent) => {
-      if (isDragging.current && hasDragged.current) {
-        // Prevent click event from firing after drag
-        e.preventDefault();
-        e.stopPropagation();
-      }
-
-      isDragging.current = false;
-      hasDragged.current = false;
-      container.style.cursor = 'grab';
-      container.style.userSelect = '';
-
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      // Prevent clicks if we just finished dragging
-      if (hasDragged.current) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
-    container.addEventListener('mousedown', handleMouseDown, true);
-    document.addEventListener('mousemove', handleMouseMove, true);
-    document.addEventListener('mouseup', handleMouseUp, true);
-    container.addEventListener('click', handleClick, true);
-
-    // Set initial cursor
-    container.style.cursor = 'grab';
-
-    return () => {
-      container.removeEventListener('mousedown', handleMouseDown, true);
-      document.removeEventListener('mousemove', handleMouseMove, true);
-      document.removeEventListener('mouseup', handleMouseUp, true);
-      container.removeEventListener('click', handleClick, true);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-    };
-  }, []);
+    }
+  };
 
 
   const handleFocusEvent = (event: Event) => {
@@ -473,7 +451,16 @@ export default function GanttChart() {
       )}
 
       {/* Gantt Chart */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-auto relative">
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-auto relative"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onClickCapture={handleClickCapture}
+        style={{ touchAction: 'none', cursor: 'grab' }}
+      >
         {visibleStart && visibleEnd && (
           <div className="min-w-full w-max">
             <TimelineHeader startDate={visibleStart} endDate={visibleEnd} />
