@@ -4,7 +4,7 @@ A local browser-based Gantt chart tool for project planning and schedule trackin
 
 ## 🎯 Features
 
-### ✅ All User Stories Complete (Phases 1-9)
+### ✅ All User Stories Complete (Phas`es 1-9)
 
 #### User Story 1: Create and View Basic Gantt Chart (P1) - MVP
 - Create, edit, and delete events (tasks)
