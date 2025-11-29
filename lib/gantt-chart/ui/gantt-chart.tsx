@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useEventStore } from '../presenter/event_store';
 import { useGroupStore } from '../presenter/group_store';
 import { useTimelineStore } from '../presenter/timeline_store';
@@ -63,6 +64,7 @@ export default function GanttChart() {
     saveVersion
   } = useVersionStore();
 
+  const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isVersionListOpen, setIsVersionListOpen] = useState(false);
   const [isSaveVersionOpen, setIsSaveVersionOpen] = useState(false);
@@ -408,6 +410,13 @@ export default function GanttChart() {
   const isLoading = eventsLoading || groupsLoading;
   const error = eventError || groupError;
 
+  const handleBack = () => {
+    const confirmed = window.confirm('返回專案列表前請先確認變更已儲存，確定要離開嗎？');
+    if (confirmed) {
+      router.push('/');
+    }
+  };
+
   if (isLoading && events.length === 0) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -420,15 +429,33 @@ export default function GanttChart() {
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b-2 border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold text-gray-900">
-            {activeProject ? `${activeProject.name} — Gantt` : 'Gantt Chart'}
-          </h1>
-          <p className="text-sm text-gray-500">
-            {activeProject
-              ? 'Changes are stored in this project only.'
-              : 'Pick a project to start planning.'}
-          </p>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white p-2 text-gray-700 shadow-sm transition hover:border-gray-400 hover:text-gray-900"
+            title="Back to projects"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              className="h-5 w-5"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold text-gray-900">
+              {activeProject ? `${activeProject.name} — Gantt` : 'Gantt Chart'}
+            </h1>
+            <p className="text-sm text-gray-500">
+              {activeProject
+                ? 'Changes are stored in this project only.'
+                : 'Pick a project to start planning.'}
+            </p>
+          </div>
         </div>
         <div className="flex gap-2">
           <button
