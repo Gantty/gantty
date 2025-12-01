@@ -2,6 +2,7 @@
 
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Event } from '../usecase/types';
+import { getContrastColor } from '@/lib/shared/utils/color';
 
 interface EventBarProps {
   event: Event;
@@ -27,6 +28,9 @@ const EventBar = React.memo(function EventBar({
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [hasPosition, setHasPosition] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  
+  // Calculate optimal text color based on background color
+  const textColor = getContrastColor(color);
 
   const updateTooltipPosition = useCallback(() => {
     const barEl = barRef.current;
@@ -90,6 +94,7 @@ const EventBar = React.memo(function EventBar({
           left: `${left}px`,
           width: `${width}px`,
           backgroundColor: color,
+          color: textColor,
           minWidth: `${dayWidth}px`
         }}
         data-prevent-pan="true"
@@ -108,7 +113,7 @@ const EventBar = React.memo(function EventBar({
           }
         }}
       >
-        <div className="text-white text-xs font-semibold truncate drop-shadow-sm">
+        <div className="text-xs font-semibold truncate">
           {event.name}
         </div>
       </div>
